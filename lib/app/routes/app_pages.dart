@@ -4,6 +4,8 @@ import '../ui/splash/splash_page.dart';
 import '../ui/splash/splash_bindings.dart';
 import '../ui/dashboard/home_page.dart';
 import '../ui/dashboard/home_bindings.dart';
+import '../ui/movies/ui/movie_form.dart';
+import '../ui/movies/bindings/movies_bindings.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -17,6 +19,11 @@ class AppPages {
       name: Routes.home,
       page: () => HomePage(),
       binding: HomePageBindings(),
+    ),
+    GetPage(
+      name: Routes.movieForm,
+      page: () => MovieForm(),
+      binding: MoviesBindings(),
     ),
   ];
 }
