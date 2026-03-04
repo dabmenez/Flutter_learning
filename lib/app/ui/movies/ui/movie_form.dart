@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../controller/movies_controller.dart';
 
@@ -85,19 +88,79 @@ class MovieForm extends GetView<MoviesController> {
                     controller.movieForm['synopsis'] = value ?? '';
                   },
                 ),
+                const SizedBox(height: 16),
+                ValueListenableBuilder<XFile?>(
+                  valueListenable: controller.imageNotifier,
+                  builder: (context, file, child) {
+                    return Column(
+                      children: [
+                        const Text(
+                          'Imagem (opcional)',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: () => controller.pickImage(),
+                          child: Container(
+                            width: double.infinity,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: file == null
+                                ? const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.photo_library,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Toque para escolher a imagem da galeria',
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.file(
+                                      File(file.path),
+                                      width: double.infinity,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final formState = _formKey.currentState;
                     if (formState != null && formState.validate()) {
                       formState.save();
-                      print(controller.movieForm);
-                      Get.snackbar(
-                        'Sucesso',
-                        'Filme adicionado com sucesso!',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                      Get.back();
+                      try {
+                        await controller.saveMovie();
+                        controller.imageNotifier.value = null;
+                        Get.snackbar(
+                          'Sucesso',
+                          'Filme adicionado com sucesso!',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        Get.back();
+                      } catch (e) {
+                        Get.snackbar(
+                          'Erro',
+                          'Erro ao salvar filme: $e',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
                     } else {
                       Get.snackbar(
                         'Erro',
