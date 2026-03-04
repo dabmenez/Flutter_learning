@@ -66,4 +66,5 @@ class DefaultFirebaseOptions {
     projectId: 'flutterprojectuff',
     storageBucket: 'flutterprojectuff.firebasestorage.app',
   );
+
 }

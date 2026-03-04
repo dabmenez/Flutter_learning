@@ -23,8 +23,10 @@ class MovieForm extends GetView<MoviesController> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: Column(
-              children: [
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 80),
+              child: Column(
+                children: [
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Nome do filme',
@@ -140,7 +142,10 @@ class MovieForm extends GetView<MoviesController> {
                   },
                 ),
                 const SizedBox(height: 24),
-                ElevatedButton(
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
                   onPressed: () async {
                     final formState = _formKey.currentState;
                     if (formState != null && formState.validate()) {
@@ -170,8 +175,10 @@ class MovieForm extends GetView<MoviesController> {
                     }
                   },
                   child: const Text('Salvar'),
+                  ),
                 ),
               ],
+            ),
             ),
           ),
         ),

@@ -5,6 +5,7 @@ class Movie {
   String directors;
   String synopsis;
   String imageBase64;
+  String createdBy;
 
   Movie({
     this.id,
@@ -13,6 +14,7 @@ class Movie {
     required this.directors,
     required this.synopsis,
     this.imageBase64 = '',
+    this.createdBy = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class Movie {
       'directors': directors,
       'synopsis': synopsis,
       'imageBase64': imageBase64,
+      'createdBy': createdBy,
     };
   }
 
@@ -33,6 +36,7 @@ class Movie {
       directors: json['directors'] ?? '',
       synopsis: json['synopsis'] ?? '',
       imageBase64: json['imageBase64'] ?? '',
+      createdBy: json['createdBy'] ?? '',
     );
   }
 }

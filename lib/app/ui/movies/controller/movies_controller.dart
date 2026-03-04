@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,7 @@ import '../service/image_service.dart';
 class MoviesController extends GetxController {
   final MovieRepository _repository = MovieRepository();
   final ImageService _imageService = ImageService();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final ImagePicker picker = ImagePicker();
   final ValueNotifier<XFile?> imageNotifier = ValueNotifier<XFile?>(null);
 
@@ -50,6 +52,7 @@ class MoviesController extends GetxController {
       directors: movieForm['directors'] ?? '',
       synopsis: movieForm['synopsis'] ?? '',
       imageBase64: movieForm['imageBase64'] ?? '',
+      createdBy: _firebaseAuth.currentUser?.uid ?? '',
     );
     await _repository.addMovie(movie);
     await loadMovies();
